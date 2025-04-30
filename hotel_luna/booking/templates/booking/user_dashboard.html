@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bookings - Hotel Luna</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-image: url('https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750');
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 40px;
+            margin-top: 50px;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            color: #007bff;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .btn-cancel:hover {
+            background-color: #bb2d3b;
+        }
+
+        h2 {
+            color: #004080;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="overlay">
+        <h2 class="text-center mb-4"><i class="fas fa-clipboard-list me-2"></i>รายการการจองของคุณ</h2>
+
+        {% if bookings %}
+            <div class="row">
+                {% for booking in bookings %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card p-3">
+                            <h5 class="card-title">{{ booking.room.room_number|default:"อาหารเท่านั้น" }}</h5>
+                            <p><strong>ประเภทห้อง:</strong> {{ booking.room.room_type|default:"-" }}</p>
+                            <p><strong>Check-in:</strong> {{ booking.check_in_date }}</p>
+                            <p><strong>Check-out:</strong> {{ booking.check_out_date }}</p>
+                            <p><strong>ราคารวม:</strong> {{ booking.total_price }} บาท</p>
+                            <a href="{% url 'booking:cancel_booking' booking.id %}" class="btn btn-cancel btn-sm mt-2">ยกเลิกการจอง</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center fs-5 text-muted">คุณยังไม่มีรายการจองในตอนนี้</p>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{% url 'booking:index' %}" class="btn btn-primary">
+                <i class="fas fa-arrow-left me-1"></i> กลับสู่หน้าหลัก
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
